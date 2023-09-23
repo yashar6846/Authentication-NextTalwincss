@@ -8,12 +8,25 @@ const RegisterForm = () => {
   const [password, setPassword]= useState("")
   const [error, setError]= useState("")
 
-   const handelSubmit =(e) => {
+   const handelSubmit = async(e) => {
     e.preventDefault()
 
     if (!name || !email || !password ){
         setError("All fields are required")
         return
+    }
+    try{
+      const res = await fetch('api/register',{
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({name, email, password})
+      })
+      if(res.ok){
+        const form = e.target
+        form.reset()
+      }else{console.log("User registration");}
+    }catch(error){
+   console.log("error during registration");
     }
    }
   console.log("name? ", name);
